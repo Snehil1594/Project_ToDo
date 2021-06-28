@@ -9,7 +9,7 @@ import test.java.base.BaseTest;
 
 import java.io.IOException;
 
-public class Tests extends BaseTest {
+public class PositiveTests extends BaseTest {
 
     @BeforeSuite(alwaysRun = true)
     public void start() throws IOException {
@@ -29,7 +29,7 @@ public class Tests extends BaseTest {
     @Test (priority=1)
     public void CreateToDoList() throws IOException {
         test = rep.startTest("02_To Create Multiple Entries in ToDo List");
-       // sa.assertEquals(NoOfAllEntries(),0);
+
         NewEntry("1 Pay Childcare Fee"); // To Create a single entry in the List
         NewEntry("2 Make A Doctor Appointment");
         NewEntry("3 Submit timeSheet");
@@ -102,6 +102,12 @@ public class Tests extends BaseTest {
         sa.assertEquals(NoOfCompletedEntries(),3);
         sa.assertEquals(NoOfActiveEntries(),7);
 
+       }
+
+    @Test (priority=6)
+    public void VerifyFeatures() throws IOException {
+        test = rep.startTest("07_To Verify Features: ClearCompleted, Mark all Completed ");
+
         reportlog("Clearing All Completed Entries"); //Changes
         ClearCompleted();
 
@@ -119,7 +125,7 @@ public class Tests extends BaseTest {
         sa.assertEquals(NoOfActiveEntries(),0);
 
         CompleteAll(); //To make all entries Active again
-       }
+    }
 
     @AfterSuite(alwaysRun = true)
     public void quit () {

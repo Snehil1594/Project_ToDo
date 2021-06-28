@@ -5,7 +5,8 @@
 <suite name="ToDo_TestSuite">
     <test name="ToDo_Tests">
                 <classes>
-            <class name="test.java.ToDo.Tests"/>
+            <class name="test.java.ToDo.PositiveTests"/>
+            <class name="test.java.ToDo.NegativeTests"/>
         </classes
         ></test>
 

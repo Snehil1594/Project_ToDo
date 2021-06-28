@@ -1,10 +1,10 @@
 package test.java.base;
 
-
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import main.java.Util.ExtentManager;
+import org.omg.CORBA.Environment;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -22,7 +22,6 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static org.openqa.selenium.By.*;
-
 
 public class BaseTest {
 
@@ -233,10 +232,14 @@ public class BaseTest {
             reportlog("ToDo_List Entry '"+Entry+"' couldn't be created");
             }
 
-    public void DeleteAnEntry(String Entry) {
+    public void DeleteAnEntry(String Entry) throws IOException {
         click("All_xpath") ;
+        try {
         driver.findElement(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::label")).click();
         driver.findElement(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::button")).click();
+        }catch (Exception ex)
+        {reportFailure(ex.getMessage());
+        }
 
         List<WebElement> t = driver.findElements(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::label"));
         if ((t.size() ==0))
@@ -245,10 +248,14 @@ public class BaseTest {
             reportlog("ToDo_List Entry '"+Entry+"' couldn't be deleted");
     }
 
-    public void CompleteAnEntry(String Entry){
+    public void CompleteAnEntry(String Entry) throws IOException {
         click("All_xpath") ;
+        try {
         List <WebElement> t=driver.findElements(xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::input"));
         t.get(0).click();
+        }catch (Exception ex)
+        { reportFailure(ex.getMessage());
+        }
 
         click("Completed_xpath") ;
         List<WebElement> l = driver.findElements(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::label"));
@@ -306,13 +313,13 @@ public class BaseTest {
     }
 
     public void ActiveEntries() throws IOException {
-        click("Active_xpath") ;
-        java.util.List<WebElement> lst = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo']"));
+        click("Active_xpath");
+        List<WebElement> lst = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo']"));
         int a = lst.size();
-        reportlog("No. of active Entries in To Do list is "+a);
+        reportlog("No. of active Entries in To Do list is " + a);
         takeFullPageScreenShot(driver);
 
-        if(a!=0) {
+        if (a != 0) {
             reportlog("Active Entries in ToDo List are below: ");
             for (WebElement webElement : lst) {
                 String name = webElement.getText();
