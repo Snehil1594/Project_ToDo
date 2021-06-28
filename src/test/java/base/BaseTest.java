@@ -4,7 +4,6 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import main.java.Util.ExtentManager;
-import org.omg.CORBA.Environment;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -16,7 +15,6 @@ import org.testng.asserts.SoftAssert;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -108,6 +106,7 @@ public class BaseTest {
         driver.close();
         Reporter.log("Driver is closed after testing");
     }
+
 
 
     /*-----------------------------------------------Validation Functions--------------------------------------------*/
@@ -281,7 +280,7 @@ public class BaseTest {
         java.util.List<WebElement> lst2 = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo']"));
         int b = lst2.size();
 
-        reportlog("No. of All Entries in To Do list is "+(a+b));
+        reportlog("----------------No. of All Entries in To Do list is "+(a+b)+" ----------------");
         takeFullPageScreenShot(driver);
 
         if((a+b)!=0) {
@@ -316,7 +315,7 @@ public class BaseTest {
         click("Active_xpath");
         List<WebElement> lst = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo']"));
         int a = lst.size();
-        reportlog("No. of active Entries in To Do list is " + a);
+        reportlog("----------------No. of active Entries in To Do list is " + a+" ----------------");
         takeFullPageScreenShot(driver);
 
         if (a != 0) {
@@ -341,7 +340,7 @@ public class BaseTest {
         click("Completed_xpath") ;
         java.util.List<WebElement> lst = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo completed']"));
         int a = lst.size();
-        reportlog("No. of completed Entries in To Do list is "+a);
+        reportlog("----------------No. of completed Entries in To Do list is "+a+" ----------------");
         takeFullPageScreenShot(driver);
 
         if(a!=0) {
