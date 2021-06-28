@@ -1,8 +1,7 @@
 package test.java.ToDo;
 
-
-
 import com.relevantcodes.extentreports.LogStatus;
+import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
@@ -14,15 +13,23 @@ public class Tests extends BaseTest {
 
     @BeforeSuite(alwaysRun = true)
     public void start() throws IOException {
+        test = rep.startTest("01_Open ToDo_List Page and verify PageTitle");
         openBrowser("Chrome");
         navigate(prop.getProperty("Todo_URL"));
-           }
+
+       if (verifyPageTitle() == true && isElementPresent("ToDoEntry_xpath"))
+           reportlog("ToDo_List Page is displayed and Page Title is correct: "+driver.getTitle());
+       else
+           Assert.fail("ToDo_List Page is not loaded correctly");
+
+        takeScreenShot();
+
+    }
 
     @Test (priority=1)
     public void CreateToDoList() throws IOException {
-        test = rep.startTest("To Create Multiple Entries in ToDo List");
-        takeScreenShot();
-
+        test = rep.startTest("02_To Create Multiple Entries in ToDo List");
+       // sa.assertEquals(NoOfAllEntries(),0);
         NewEntry("1 Pay Childcare Fee"); // To Create a single entry in the List
         NewEntry("2 Make A Doctor Appointment");
         NewEntry("3 Submit timeSheet");
@@ -32,133 +39,87 @@ public class Tests extends BaseTest {
         NewEntry("7 Wish Old Friend for birthday");
         NewEntry("8 Donate to Giving.sg");
 
-        takeScreenShot();
-    }
+        sa.assertEquals(NoOfAllEntries(),8);
+            }
 
     @Test (priority=2)
     public void DeleteEntries() throws IOException {
-        test = rep.startTest("To Delete sepecific Entries from ToDo List");
-        reportlog("Creating and Deleting Entries 9 & 10");
+        test = rep.startTest("03_To Delete specific Entries from ToDo List");
 
+        reportlog("Adding 2 new entries in ToDo_List");
         NewEntry("9 Get Internet Connection");
         NewEntry("10 To send Email to Recruiter");
+        sa.assertEquals(NoOfAllEntries(),10);
 
-        takeScreenShot();
-
+        reportlog("Deleting 2 newly created entries from ToDo_List");
         DeleteAnEntry("9 Get Internet Connection");
         DeleteAnEntry("10 To send Email to Recruiter");
-
-        takeScreenShot();
-
-    }
+        sa.assertEquals(NoOfAllEntries(),8);
+            }
 
     @Test (priority=3)
     public void CompleteEntries() throws IOException {
-        test = rep.startTest("To Complete sepecific Entries from ToDo List");
-        reportlog("Creating Entry 11 and completing Entries 1 and 11");
+        test = rep.startTest("04_To Complete specific Entries from ToDo List");
 
-        NewEntry("11 Get SP Services Connection");
-        takeScreenShot();
-        CompleteAnEntry("11 Get SP Services Connection");
-       CompleteAnEntry("1 Pay Childcare Fee");
-        takeScreenShot();
+        reportlog("Adding 2 new entries in ToDo_List");
+        NewEntry("11 Call to Anna");
+        NewEntry("12 Buy YogaPants");
+        sa.assertEquals(NoOfAllEntries(),10);
 
+        reportlog("Marking 2 newly created entries as completed from ToDo_List");
+        CompleteAnEntry("11 Call to Anna");
+        CompleteAnEntry("12 Buy YogaPants");
+        sa.assertEquals(NoOfAllEntries(),10);
+        sa.assertEquals(NoOfCompletedEntries(),2);
+        sa.assertEquals(NoOfActiveEntries(),8);
     }
 
     @Test (priority=4)
-    public void AllEntriesTab() throws IOException {
-        test = rep.startTest("To Verify All Entries Tab");
-
-        reportlog("Intial overview of All Entries Tab: ");
+    public void GetEntriesList() throws IOException {
+        test = rep.startTest("05_Get Entries list from ToDo_List_Tabs: All, Active, Completed");
         AllEntries();
-        takeScreenShot();
-
-        reportlog("Creating a New Entry - Visit Grandma");
-        NewEntry("12 Visit Grandma");
-        reportlog("Deleting an Entry - Wish Old Friend for birthday");
-        DeleteAnEntry("7 Wish Old Friend for birthday");
-        reportlog("Marking an entry as completed - Donate to Giving.sg");
-        CompleteAnEntry("8 Donate to Giving.sg");
-
-        reportlog("Intial overview of All Entries Tab: ");
-        AllEntries();
-        takeScreenShot();
-
-        reportlog("Clear all completed entries");
-        ClearCompleted();
-
-        reportlog("Overview of All Entries Tab after clearing all completed entries ");
-        AllEntries();
-        takeScreenShot();
-
-
-        reportlog("Marking all activities a completed");
-        CompleteAll();
-
-        reportlog("Overview of All Entries Tab after marking all entries as completed ");
-        AllEntries();
-        takeScreenShot();
-
-        CompleteAll(); //To make all entries Active again
-
-
-          }
+        ActiveEntries();
+        CompletedEntries();
+    }
 
     @Test (priority=5)
-    public void ActiveEntriesTab() throws IOException {
-        test = rep.startTest("To Verify Active Entries Tab");
+    public void VerifyTabs() throws IOException {
+        test = rep.startTest("06_To Verify Tabs: All, Active, Completed");
 
-        reportlog("Intial overview of Active Entries Tab: ");
-        ActiveEntries();
-        takeScreenShot();
+        reportlog("Initial overview of Tabs: ");
 
-        reportlog("Creating a New Entry - Buy Curtains");
-        NewEntry("13 Buy Curtains");
-        reportlog("Deleting an Entry - Buy Grocery");
-        DeleteAnEntry("6 Buy Grocery");
-        reportlog("Marking an entry as completed - Submit timeSheet");
-        CompleteAnEntry("3 Submit timeSheet");
+        sa.assertEquals(NoOfAllEntries(),10);
+        sa.assertEquals(NoOfCompletedEntries(),2);
+        sa.assertEquals(NoOfActiveEntries(),8);
 
+        reportlog("Making below Changes: "); //Changes
+        NewEntry("13 Visit Grandma");
+        DeleteAnEntry("7 Wish Old Friend for birthday");
+        CompleteAnEntry("8 Donate to Giving.sg");
 
-        reportlog("Overview of Active Entries Tab after above actions: ");
-        ActiveEntries();
-        takeScreenShot();
+        reportlog("New overview of Tabs: "); //Verifications
+        sa.assertEquals(NoOfAllEntries(),10);
+        sa.assertEquals(NoOfCompletedEntries(),3);
+        sa.assertEquals(NoOfActiveEntries(),7);
 
-        reportlog("Marking all activities a completed");
-        CompleteAll();
-
-        reportlog("Overview of Active Entries Tab after marking all entries as completed ");
-        ActiveEntries();
-        takeScreenShot();
-
-        CompleteAll(); //To make all entries Active again
-
-    }
-
-    @Test (priority=6)
-    public void CompletedEntriesTab() throws IOException {
-        test = rep.startTest("To Verify Completed Entries Tab");
-
-        reportlog("Intial overview of Completed Entries Tab: ");
-        CompletedEntries();
-        takeScreenShot();
-
-        reportlog("Marking 2 Entries as Completed");
-        CompleteAnEntry("5 Join PTM");
-        CompleteAnEntry("4 Buy Gym Membership");
-
-        reportlog("Overview of Completed Entries Tab after marking 2 entries as completed: ");
-        CompletedEntries();
-        takeScreenShot();
-
-        reportlog("Clear all completed entries");
+        reportlog("Clearing All Completed Entries"); //Changes
         ClearCompleted();
 
-        reportlog("Overview of Completed Entries Tab after clearing all completed entries ");
-        CompletedEntries();
-        takeScreenShot();
+        reportlog("Overview of All,Completed Tabs after clearing all completed entries "); //Verifications
+        sa.assertEquals(NoOfAllEntries(),7);
+        sa.assertEquals(NoOfCompletedEntries(),0);
 
-    }
+
+        reportlog("Marking all activities as completed"); //Changes
+        CompleteAll();
+
+        reportlog("Overview of Tabs after marking all entries as completed "); //Verifications
+        sa.assertEquals(NoOfAllEntries(),7);
+        sa.assertEquals(NoOfCompletedEntries(),7);
+        sa.assertEquals(NoOfActiveEntries(),0);
+
+        CompleteAll(); //To make all entries Active again
+       }
 
     @AfterSuite(alwaysRun = true)
     public void quit () {
@@ -167,7 +128,6 @@ public class Tests extends BaseTest {
         }catch(Error e) {
             test.log(LogStatus.FAIL, e.getMessage());
         }
-
         rep.endTest(test);
         rep.flush();
         System.out.println("report is flushed");

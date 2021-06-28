@@ -144,6 +144,15 @@ public class BaseTest {
 
     }
 
+    public boolean verifyPageTitle(){
+        String actualText=driver.getTitle();
+        String expectedText="Vue.js • TodoMVC";
+              if(actualText.equals(expectedText))
+                  return true;
+              else
+        return false;
+    }
+
 
     /*---------------------------------------------------Report Functions--------------------------------------------*/
 
@@ -185,25 +194,69 @@ public class BaseTest {
         test.log(LogStatus.INFO,"Screenshot -> "+ test.addScreenCapture(capture()));
     }
 
+    public void takeFullPageScreenShot(WebDriver driver) throws IOException {
+
+        JavascriptExecutor jsExec = (JavascriptExecutor)driver;
+        //Returns a Long, Representing the Height of the window’s content area.
+        Long windowHeight = (Long) jsExec.executeScript("return window.innerHeight;");
+        //Returns a Long, Representing the Height of the complete WebPage a.k.a. HTML document.
+        Long webpageHeight = (Long) jsExec.executeScript("return document.body.scrollHeight;");
+        //Marker to keep track of the current position of the scroll point
+        //Long currentWindowScroll = Long.valueOf(0);
+        //Using java's boxing feature to create a Long object from native long value.
+        long currentWindowScroll = 0L;
+        do{
+            //System.out.println(windowHeight + ", " + webpageHeight + ", " + currentWindowScroll);
+
+            jsExec.executeScript("window.scrollTo(0, " + currentWindowScroll + ");");
+
+            Actions act = new Actions(driver);
+            act.pause(5000).perform();
+
+            test.log(LogStatus.INFO,"Screenshot -> "+ test.addScreenCapture(capture()));
+
+            currentWindowScroll = currentWindowScroll + windowHeight;
+        }while(currentWindowScroll <= webpageHeight);
+    }
+
 
     /*-----------------------------Others-------------------------*/
 
     public void NewEntry(String Entry) {
-        type("ToDoEntry_class",Entry);
-        getElement("ToDoEntry_class").sendKeys(Keys.ENTER);
-    }
+        type("ToDoEntry_xpath",Entry);
+        getElement("ToDoEntry_xpath").sendKeys(Keys.ENTER);
+
+        List<WebElement> t = driver.findElements(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::label"));
+        if (!(t.size() ==0))
+            reportlog("ToDo_List Entry '"+Entry+"' is created");
+        else
+            reportlog("ToDo_List Entry '"+Entry+"' couldn't be created");
+            }
 
     public void DeleteAnEntry(String Entry) {
         click("All_xpath") ;
         driver.findElement(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::label")).click();
         driver.findElement(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::button")).click();
-            }
+
+        List<WebElement> t = driver.findElements(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::label"));
+        if ((t.size() ==0))
+            reportlog("ToDo_List Entry '"+Entry+"' is deleted");
+        else
+            reportlog("ToDo_List Entry '"+Entry+"' couldn't be deleted");
+    }
 
     public void CompleteAnEntry(String Entry){
         click("All_xpath") ;
         List <WebElement> t=driver.findElements(xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::input"));
         t.get(0).click();
-           }
+
+        click("Completed_xpath") ;
+        List<WebElement> l = driver.findElements(By.xpath("//*[contains(text(),'"+Entry+"')]//parent::div/child::label"));
+        if (!(l.size() ==0))
+            reportlog("ToDo_List Entry '"+Entry+"' is marked as completed");
+        else
+            reportlog("ToDo_List Entry '"+Entry+"' couldn't be marked as completed");
+    }
 
     public void CompleteAll(){
         click("CompleteAll_xpath");
@@ -213,7 +266,7 @@ public class BaseTest {
         click("ClearCompleted_css");
     }
 
-    public void AllEntries(){
+    public void AllEntries() throws IOException {
         click("All_xpath") ;
 
         java.util.List<WebElement> lst1 = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo completed']"));
@@ -222,6 +275,7 @@ public class BaseTest {
         int b = lst2.size();
 
         reportlog("No. of All Entries in To Do list is "+(a+b));
+        takeFullPageScreenShot(driver);
 
         if((a+b)!=0) {
             reportlog("All Entries in ToDo List are below: ");
@@ -237,11 +291,27 @@ public class BaseTest {
 
     }
 
-    public void ActiveEntries(){
+    public int NoOfAllEntries() throws IOException {
+        click("All_xpath") ;
+
+        java.util.List<WebElement> lst1 = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo completed']"));
+        int a = lst1.size();
+        java.util.List<WebElement> lst2 = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo']"));
+        int b = lst2.size();
+
+        reportlog("No. of All Entries in To Do list is "+(a+b));
+        takeFullPageScreenShot(driver);
+        return a+b;
+
+    }
+
+    public void ActiveEntries() throws IOException {
         click("Active_xpath") ;
         java.util.List<WebElement> lst = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo']"));
         int a = lst.size();
         reportlog("No. of active Entries in To Do list is "+a);
+        takeFullPageScreenShot(driver);
+
         if(a!=0) {
             reportlog("Active Entries in ToDo List are below: ");
             for (WebElement webElement : lst) {
@@ -251,21 +321,39 @@ public class BaseTest {
         }
     }
 
-    public void CompletedEntries(){
+    public int NoOfActiveEntries() throws IOException {
+        click("Active_xpath") ;
+        java.util.List<WebElement> lst = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo']"));
+        int a = lst.size();
+        reportlog("No. of active Entries in To Do list is "+a);
+        takeFullPageScreenShot(driver);
+        return a;
+    }
+
+    public void CompletedEntries() throws IOException {
         click("Completed_xpath") ;
         java.util.List<WebElement> lst = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo completed']"));
         int a = lst.size();
         reportlog("No. of completed Entries in To Do list is "+a);
+        takeFullPageScreenShot(driver);
 
-     if(a!=0) {
+        if(a!=0) {
          reportlog("Completed Entries in ToDo List are below: ");
          for (WebElement webElement : lst) {
              String name = webElement.getText();
              reportlog(name);
          }
               }
-
     }
+
+    public int NoOfCompletedEntries() throws IOException {
+        click("Completed_xpath") ;
+        java.util.List<WebElement> lst = driver.findElements(cssSelector("ul[class='todo-list']>li[class='todo completed']"));
+        int a = lst.size();
+        reportlog("No. of completed Entries in To Do list is "+a);
+        takeFullPageScreenShot(driver);
+        return a;
+             }
 
 
 }

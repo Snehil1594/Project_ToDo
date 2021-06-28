@@ -12,7 +12,7 @@ public class ExtentManager {
     public static ExtentReports getInstance() {
         if (extent == null) {
             Date d=new Date();
-            String fileName=d.toString().replace(":", "_").replace(" ", "_")+".html";
+            String fileName="Project_ToDo_"+d.toString().replace(":", "_").replace(" ", "_")+".html";
             extent = new ExtentReports("Report//"+fileName, true, DisplayOrder.NEWEST_FIRST);
 
             extent.loadConfig(new File("src\\ReportsConfig.xml"));
