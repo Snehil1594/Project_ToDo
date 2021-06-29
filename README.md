@@ -42,9 +42,9 @@ JDK : 1.8 ;  Maven : 3.6.3
 
 Chrome browser : Version 91.0.4472.114 (Official Build) (64-bit)
 
-> Currently code is dependent on Chromedriver.exe file placed in :https://github.com/Snehil1594/Project_ToDo/tree/master/src/test/resources/drivers
+  > Currently code is dependent on Chromedriver.exe file placed in :https://github.com/Snehil1594/Project_ToDo/tree/master/src/test/resources/drivers
 
-> Version of placed chrome driver is 91.0.4472.114(latest)
+  > Version of placed chrome driver is 91.0.4472.114(latest)
 
 
 Thank You
