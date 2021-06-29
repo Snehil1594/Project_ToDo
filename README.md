@@ -1,6 +1,9 @@
 # Project_ToDo
 Project ToDoList
 
+Test URL : http://todomvc.com/examples/vue/
+Framework : Selenium Webdrive TestNG Framework
+
 Git Repository : https://github.com/Snehil1594/Project_ToDo.git
 
 Download Sample Report from the Path: https://github.com/Snehil1594/Project_ToDo/blob/master/Report/Sample_Report.zip > [To Download/Unzip/view html report]
@@ -34,3 +37,5 @@ JDK : 1.8 ;  Maven : 3.6.3
 Chrome browser : Version 91.0.4472.114 (Official Build) (64-bit)
 
 > Currently code is dependent on Chromedriver.exe file placed in :https://github.com/Snehil1594/Project_ToDo/tree/master/src/test/resources/drivers
+
+
