@@ -14,6 +14,8 @@ Download Sample Report from the Path: https://github.com/Snehil1594/Project_ToDo
     "In order to remember the things I want to do, as a ToDo MVC user, I want to manage my todo list"
  
 
+****************************************************************************************************************
+
 To Run The Test :
 
 1. Go to Git Repository : https://github.com/Snehil1594/Project_ToDo.git
@@ -35,6 +37,9 @@ Once Project is loaded in Intelli Editor:
           "testng.xml" > RightClick > Run Maven > test
           
  
+ Latest Test Execution Report can be found in :Project_folder/Report > Verify Latest .html File
+ 
+ **************************************************************************************************************
  
 Configuration I have tested this code on:
 
