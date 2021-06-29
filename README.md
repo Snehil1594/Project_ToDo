@@ -46,6 +46,5 @@ Chrome browser : Version 91.0.4472.114 (Official Build) (64-bit)
 
 > Version of placed chrome driver is 91.0.4472.114(latest)
 
-Kindly let me know if any additional input is required.
 
 Thank You
