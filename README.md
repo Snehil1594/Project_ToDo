@@ -10,7 +10,7 @@ Run The Test :
 1. Go to Git Repository : https://github.com/Snehil1594/Project_ToDo.git
 2. Download Code > Download Zip
 3. Unzip the code in a Folder
-4. Go into the project folder where "src" folder is located
+4. Go into the project folder where "src" folder pom.xml file is located
 5. Open Command prompt at this location
 6. Give command: mvn test
 
