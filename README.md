@@ -1,13 +1,18 @@
 # Project_ToDo
-Project ToDoList
+Project: ToDoList
 
 Test URL : http://todomvc.com/examples/vue/
 
-Framework : Selenium Webdrive TestNG Framework
+Framework : Selenium Webdriver TestNG Framework (Java)
 
 Git Repository : https://github.com/Snehil1594/Project_ToDo.git
 
-Download Sample Report from the Path: https://github.com/Snehil1594/Project_ToDo/blob/master/Report/Sample_Report.zip > [To Download/Unzip/view html report]
+Download Sample Report from the Path: https://github.com/Snehil1594/Project_ToDo/blob/master/Report/Sample_Report.zip
+   
+    Unzip the Report and refer .html file. This report consists of all the Test scenarios with outcome, for user story:
+                                      
+    "In order to remember the things I want to do, as a ToDo MVC user, I want to manage my todo list"
+ 
 
 To Run The Test :
 
@@ -39,4 +44,8 @@ Chrome browser : Version 91.0.4472.114 (Official Build) (64-bit)
 
 > Currently code is dependent on Chromedriver.exe file placed in :https://github.com/Snehil1594/Project_ToDo/tree/master/src/test/resources/drivers
 
+> Version of placed chrome driver is 91.0.4472.114(latest)
 
+Kindly let me know if any additional input is required.
+
+Thank You
